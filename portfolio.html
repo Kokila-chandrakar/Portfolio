@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Kokila Chandrakar | AI & ML Developer</title>
+  <!-- Google Fonts & Font Awesome CDN for clean icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Tailwind CSS CDN for rapid styling + custom overrides */
+    @import url("https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css");
+    /* Custom reset & enhancements */
+    * {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0a0c10;
+      color: #eef2ff;
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1e1f2a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #6c63ff;
+      border-radius: 12px;
+    }
+    /* custom glassmorphism & animations */
+    .glass-card {
+      background: rgba(30, 34, 48, 0.65);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(108, 99, 255, 0.25);
+      transition: all 0.3s ease;
+    }
+    .glass-card:hover {
+      border-color: #6c63ff;
+      transform: translateY(-5px);
+      box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.5);
+    }
+    .btn-glow {
+      transition: all 0.2s ease;
+    }
+    .btn-glow:hover {
+      box-shadow: 0 0 12px rgba(108, 99, 255, 0.6);
+      transform: scale(1.02);
+    }
+    .section-title {
+      background: linear-gradient(135deg, #c084fc, #6c63ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: inline-block;
+    }
+    .hero-badge {
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0px); }
+    }
+    .skill-tag {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border-left: 3px solid #6c63ff;
+      transition: 0.2s;
+    }
+    .skill-tag:hover {
+      background: #2d3a5e;
+      transform: translateX(6px);
+    }
+    a, button {
+      cursor: pointer;
+    }
+    /* responsive touch */
+    @media (max-width: 768px) {
+      .hero-section {
+        padding-top: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- React + TypeScript via CDN + Babel standalone (for pure TSX compilation) -->
+<script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/babel-standalone@6.26.0/babel.min.js"></script>
+<script type="text/babel" data-type="tsx">
+  // TypeScript React functional components with full type safety
+  // This is a fully self-contained React + TypeScript app with no build step
+  
+  // ---- Type definitions ----
+  interface Project {
+    id: number;
+    title: string;
+    description: string;
+    techStack: string;
+    icon: string;
+  }
+
+  interface Skill {
+    name: string;
+    level: number; // just for visual bar width
+    category: string;
+  }
+
+  // ---- Data (owner: Kokila) ----
+  const skillsData: Skill[] = [
+    { name: "Python", level: 92, category: "Backend" },
+    { name: "JavaScript", level: 88, category: "Frontend" },
+    { name: "React", level: 85, category: "Frontend" },
+    { name: "SQL", level: 80, category: "Database" },
+    { name: "HTML5/CSS3", level: 90, category: "Web" },
+    { name: "Machine Learning", level: 78, category: "AI/ML" },
+    { name: "Computer Vision", level: 75, category: "AI/ML" },
+  ];
+
+  const projectsData: Project[] = [
+    {
+      id: 1,
+      title: "AeroVision",
+      description: "AI-based classroom and campus security system using real-time computer vision and anomaly detection.",
+      techStack: "Python, OpenCV, TensorFlow, React Dashboard",
+      icon: "fa-shield-haltered"
+    },
+    {
+      id: 2,
+      title: "HackIndia Spark Platform",
+      description: "Space debris monitoring & weather intelligence platform for satellite risk assessment.",
+      techStack: "React, D3.js, FastAPI, ML forecasting",
+      icon: "fa-satellite"
+    }
+  ];
+
+  const socialLinks = [
+    { name: "GitHub", url: "https://github.com/Kokila-chandrakar", icon: "fab fa-github" },
+    { name: "LinkedIn", url: "https://www.linkedin.com/in/kokila-chandrakar-08754b347/", icon: "fab fa-linkedin" },
+    { name: "Email", url: "payalchandrakar327@gmail.com", icon: "fas fa-envelope" },
+  ];
+
+  // ---- Reusable Components ----
+  const Navbar: React.FC = () => {
+    const navItems = ["Home", "About", "Skills", "Projects", "Contact"];
+    const scrollToSection = (id: string) => {
+      const element = document.getElementById(id.toLowerCase());
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    };
+    return (
+      <nav className="fixed top-0 left-0 w-full z-50 bg-[#0a0c10]/80 backdrop-blur-xl border-b border-gray-800 py-3 px-6 md:px-10">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent">
+            Kokila<span className="text-indigo-300">.</span>
+          </div>
+          <ul className="hidden md:flex space-x-8 text-gray-300 font-medium">
+            {navItems.map((item) => (
+              <li key={item}>
+                <button onClick={() => scrollToSection(item)} className="hover:text-indigo-400 transition duration-200">
+                  {item}
+                </button>
+              </li>
+            ))}
+          </ul>
+          <button className="md:hidden text-2xl focus:outline-none">
+            <i className="fas fa-bars"></i>
+          </button>
+        </div>
+      </nav>
+    );
+  };
+
+  // Hero Section
+  const Hero: React.FC = () => {
+    return (
+      <section id="home" className="min-h-screen flex items-center justify-center pt-20 pb-12 px-6">
+        <div className="max-w-6xl mx-auto text-center md:text-left flex flex-col md:flex-row items-center gap-12">
+          <div className="flex-1 space-y-5 hero-badge">
+            <div className="inline-block px-4 py-1 rounded-full bg-indigo-900/40 text-indigo-300 text-sm font-semibold border border-indigo-500/40">
+               AI & ML Developer
+            </div>
+            <h1 className="text-5xl md:text-7xl font-extrabold leading-tight">
+              Hey, I'm <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Kokila Chandrakar</span>
+            </h1>
+            <p className="text-xl text-gray-300 max-w-2xl md:mx-0 mx-auto">
+               Enthusiastic AI & Machine Learning student passionate about
+        building intelligent systems, solving real-world problems,
+        and creating innovative AI-driven solutions.
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center md:justify-start pt-2">
+              <a href="#projects" className="px-6 py-3 rounded-full bg-indigo-600 hover:bg-indigo-500 transition-all btn-glow font-semibold flex items-center gap-2">
+                Explore Work <i className="fas fa-arrow-right"></i>
+              </a>
+              <a href="#contact" className="px-6 py-3 rounded-full border border-indigo-500 hover:bg-indigo-500/20 transition font-semibold">
+                Contact Me
+              </a>
+            </div>
+          </div>
+          <div className="flex-1 flex justify-center">
+            <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 p-1 shadow-2xl animate-pulse">
+              <div className="w-full h-full rounded-full bg-[#0a0c10] flex items-center justify-center overflow-hidden">
+                <i className="fas fa-brain text-7xl text-indigo-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  };
+
+  // About Me
+  const About: React.FC = () => {
+    return (
+      <section id="about" className="py-20 px-6 bg-[#0f1117]">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-12"><span className="section-title">About Me</span></h2>
+          <div className="glass-card rounded-2xl p-8 md:p-10 backdrop-blur-sm">
+            <div className="grid md:grid-cols-2 gap-8">
+              <div>
+                <h3 className="text-2xl font-semibold text-indigo-300">AI & ML Student</h3>
+                <p className="mt-4 text-gray-300 leading-relaxed">
+                  I'm Kokila Chandrakar, a passionate and enthusiastic AI & Machine Learning student with a strong interest in building intelligent systems that solve real-world problems. I enjoy exploring modern technologies like Machine Learning, Computer Vision, and Web Development to create impactful and innovative solutions.
+                </p>
+                <p className="mt-3 text-gray-300">
+                  With hands-on experience in projects related to smart security systems and space technology platforms, I continuously strive to improve my technical skills and gain practical industry experience. I am highly motivated, a quick learner, and always excited to work on creative AI-driven ideas that can make a meaningful difference.
+                </p>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  <span className="px-3 py-1 rounded-full bg-indigo-900/40 text-sm"><i className="fas fa-map-marker-alt mr-1"></i> Bhilai, Chhattisgarh</span>
+                  <span className="px-3 py-1 rounded-full bg-indigo-900/40 text-sm"><i className="fas fa-graduation-cap mr-1"></i> B.Tech CSE (AI & ML)</span>
+                </div>
+              </div>
+              <div className="bg-[#0c0e14] rounded-xl p-5 border border-indigo-800/40">
+                <h4 className="text-xl font-semibold flex items-center gap-2"><i className="fas fa-quote-left text-indigo-400"></i> Mission</h4>
+                <p className="mt-2 text-gray-400 italic">
+                  "Building AI that empowers industries — from education safety to the vast frontier of space. Reliable, explainable, and impactful."
+                </p>
+                <div class="mt-5 flex justify-end">
+                  <button onclick="window.open('https://drive.google.com/uc?export=download&id=1Qd-RnZ8EYDLiYfXrStCYBoOw8Z-5Wrq3', '_blank')" class="bg-indigo-700 hover:bg-indigo-600 transition px-5 py-2 rounded-lg font-medium flex items-center gap-2 btn-glow"
+  >
+                   <i class="fas fa-download"></i> Download Resume
+                 </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  };
+
+  // Skills Component with modern progress circles
+  const Skills: React.FC = () => {
+    return (
+      <section id="skills" className="py-20 px-6">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-12"><span className="section-title">Technical Arsenal</span></h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {skillsData.map((skill, idx) => (
+              <div key={idx} className="glass-card rounded-xl p-5 flex flex-col">
+                <div className="flex justify-between items-center mb-3">
+                  <span className="font-bold text-lg">{skill.name}</span>
+                  <span className="text-sm text-indigo-300">{skill.level}%</span>
+                </div>
+                <div className="w-full bg-gray-700 rounded-full h-2.5 overflow-hidden">
+                  <div className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2.5 rounded-full transition-all duration-1000" style={{ width: `${skill.level}%` }}></div>
+                </div>
+                <div className="mt-3 text-xs text-gray-400 uppercase tracking-wider">{skill.category}</div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-14 flex flex-wrap justify-center gap-3">
+            {["Computer Vision", "Pandas", "Scikit-learn", "FastAPI", "Tailwind CSS", "TypeScript"].map((extra, i) => (
+              <span key={i} className="skill-tag px-4 py-2 rounded-full text-sm font-mono text-gray-200 shadow-md">
+                {extra}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  };
+
+  // Projects / Work Section
+  const Projects: React.FC = () => {
+    return (
+      <section id="projects" className="py-20 px-6 bg-[#0f1117]">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-6"><span className="section-title">Featured Innovations</span></h2>
+          <p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto">Real-world AI solutions that redefine security and space intelligence</p>
+          <div className="grid md:grid-cols-2 gap-10">
+            {projectsData.map((project) => (
+              <div key={project.id} className="glass-card rounded-2xl overflow-hidden transition-all duration-300 group hover:shadow-indigo-500/20">
+                <div className="h-48 bg-gradient-to-br from-indigo-900/40 to-purple-900/40 flex items-center justify-center">
+                  <i className={`fas ${project.icon} text-6xl text-indigo-300 group-hover:scale-110 transition duration-300`}></i>
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-bold tracking-tight">{project.title}</h3>
+                  <p className="text-gray-300 mt-2 text-sm leading-relaxed">{project.description}</p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {project.techStack.split(',').map((tech, idx) => (
+                      <span key={idx} className="text-xs bg-gray-800 px-2 py-1 rounded-md text-indigo-200">{tech.trim()}</span>
+                    ))}
+                  </div>
+                  <div className="mt-5 flex gap-3">
+                    <button className="text-indigo-400 hover:text-indigo-300 transition text-sm flex items-center gap-1"><i className="fab fa-github"></i> Code</button>
+                    <button className="text-indigo-400 hover:text-indigo-300 transition text-sm flex items-center gap-1"><i className="fas fa-external-link-alt"></i> Live Demo</button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-10">
+            <a href="#contact" className="inline-flex items-center gap-2 text-indigo-400 border-b border-indigo-400 pb-1 hover:gap-3 transition-all">More projects on request →</a>
+          </div>
+        </div>
+      </section>
+    );
+  };
+
+  // Contact & Social
+  const Contact: React.FC = () => {
+    return (
+      <section id="contact" className="py-20 px-6">
+        <div className="max-w-5xl mx-auto text-center">
+          <h2 className="text-4xl font-bold mb-6"><span className="section-title">Let's Connect</span></h2>
+          <p className="text-gray-300 mb-10 max-w-lg mx-auto">Passionate about AI breakthroughs? Feel free to reach out or follow my work.</p>
+          <div className="flex flex-wrap justify-center gap-8 mb-12">
+            {socialLinks.map((link) => (
+              <a key={link.name} href={link.url} target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-2 transition-all transform hover:-translate-y-2">
+                <div className="h-14 w-14 rounded-full bg-gray-800 flex items-center justify-center text-2xl text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-lg">
+                  <i className={link.icon}></i>
+                </div>
+                <span className="text-sm text-gray-400">{link.name}</span>
+              </a>
+            ))}
+          </div>
+          <div className="glass-card max-w-lg mx-auto rounded-2xl p-6 text-left">
+            <h3 className="text-xl font-semibold flex items-center gap-2"><i className="fas fa-paper-plane text-indigo-400"></i> Send a quick message</h3>
+            <div className="mt-4 space-y-3">
+              <input type="text" placeholder="Your Name" className="w-full bg-[#141822] border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-indigo-500 text-white" />
+              <input type="email" placeholder="Email address" className="w-full bg-[#141822] border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-indigo-500 text-white" />
+              <textarea rows={3} placeholder="Your message..." className="w-full bg-[#141822] border border-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:border-indigo-500 text-white"></textarea>
+              <button className="w-full bg-indigo-600 py-2 rounded-lg font-semibold hover:bg-indigo-500 transition btn-glow flex justify-center items-center gap-2">
+                <i className="fas fa-comment-dots"></i> Send Message
+              </button>
+            </div>
+          </div>
+          <div className="mt-10 text-sm text-gray-500">
+            <i className="fas fa-map-marker-alt mr-1"></i> Available for freelance & AI consultations
+          </div>
+        </div>
+      </section>
+    );
+  };
+
+  // Footer
+  const Footer: React.FC = () => {
+    return (
+      <footer className="border-t border-gray-800 py-8 text-center text-gray-500 text-sm">
+        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-3">
+          <span>© 2025 Kokila Chandrakar — AI & ML Developer</span>
+          <div className="flex gap-5">
+            <a href="#" className="hover:text-indigo-400 transition"><i className="fab fa-github"></i></a>
+            <a href="#" className="hover:text-indigo-400 transition"><i className="fab fa-linkedin"></i></a>
+            <a href="#" className="hover:text-indigo-400 transition"><i className="fab fa-x-twitter"></i></a>
+          </div>
+        </div>
+      </footer>
+    );
+  };
+
+  // Main App Component
+  const App: React.FC = () => {
+    // download resume handler (mock PDF generation or file)
+    const handleDownloadResume = () => {
+      // In real scenario link to actual PDF; here we create a virtual resume text file
+      const resumeContent = `
+        KOKILA CHANDRAKAR
+        AI & ML Developer
+
+        SUMMARY: Innovative AI developer with expertise in computer vision, Python, and React-based ML dashboards.
+        
+        SKILLS: Python, JavaScript, React, SQL, HTML/CSS, Machine Learning, Computer Vision.
+        
+        PROJECTS:
+        - AeroVision: AI security & campus monitoring system (Python, OpenCV, YOLO)
+        - HackIndia Spark: Space debris monitoring platform (React, FastAPI, ML forecasting)
+        
+        EDUCATION: B.E. in Artificial Intelligence & Machine Learning
+        
+        CERTIFICATIONS: Deep Learning Specialization, Google TensorFlow Developer Certificate.
+      `;
+      const blob = new Blob([resumeContent], { type: 'application/pdf' }); // using text/plain for demo, but treat as download
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Kokila_Chandrakar_Resume.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    };
+
+    // attach resume download listener after mount
+    React.useEffect(() => {
+      const resumeBtn = document.getElementById('resumeBtn');
+      if (resumeBtn) {
+        resumeBtn.addEventListener('click', handleDownloadResume);
+      }
+      return () => {
+        if (resumeBtn) resumeBtn.removeEventListener('click', handleDownloadResume);
+      };
+    }, []);
+
+    return (
+      <div className="bg-[#0a0c10] text-gray-100 overflow-x-hidden">
+        <Navbar />
+        <main>
+          <Hero />
+          <About />
+          <Skills />
+          <Projects />
+          <Contact />
+        </main>
+        <Footer />
+      </div>
+    );
+  };
+
+  // Render the App to root
+  const rootElement = document.getElementById('root');
+  if (rootElement) {
+    const root = ReactDOM.createRoot(rootElement);
+    root.render(<App />);
+  }
+</script>
+</body>
+</html>
