@@ -50,7 +50,3 @@ Kokila Chandrakar
 AI & ML Developer
 
 ---
-
-## About
-
-This is a modern AI & ML portfolio website designed to showcase projects, technical skills, and achievements in an interactive and professional way. The portfolio focuses on clean UI design, responsiveness, and modern web technologies.
